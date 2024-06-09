@@ -1,12 +1,7 @@
-package przepisnik
+package main
 
-import "fmt"
+import "fit.synapse/przepisnik/server"
 
-func main()  {
-    Hello("stefan")	
+func main() {
+	server.Start()
 }
-func Hello(name string) string {
-    message := fmt.Sprintf("Hi, %v. Welcome!", name)
-    return message
-}
-
