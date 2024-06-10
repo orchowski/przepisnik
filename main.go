@@ -5,5 +5,8 @@ import (
 )
 
 func main() {
-	factory.BuildApp().WithPort(7000).Start()
+	factory.
+		BuildApp().
+		WithPort(7000).
+		Start()
 }
