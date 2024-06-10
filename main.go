@@ -1,7 +1,9 @@
 package main
 
-import "fit.synapse/przepisnik/server"
+import (
+	factory "fit.synapse/przepisnik/app/factory"
+)
 
 func main() {
-	server.Start()
+	factory.BuildApp().WithPort(7000).Start()
 }

@@ -1,30 +1,18 @@
 package server
 
 import (
-	"fmt"
-	"log"
+	"fit.synapse/przepisnik/logger"
 	"net/http"
+	"strconv"
 )
 
-func Start() {
-	http.HandleFunc("/", homeHandler)
-	http.HandleFunc("/hello", helloHandler)
-	http.HandleFunc("/goodbye", goodbyeHandler)
-
-	fmt.Println("Starting server on :8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		log.Fatalf("Could not start server: %s\n", err)
+func Start(port int, endpoints map[string]Handler) {
+	for path, handler := range endpoints {
+		http.HandleFunc(path, handler.build())
 	}
-}
 
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Welcome to the home page!")
-}
-
-func helloHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Hello, world!")
-}
-
-func goodbyeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Goodbye, world!")
+	logger.Log(logger.INFO, "Starting server on :%d", port)
+	if err := http.ListenAndServe(":"+strconv.Itoa(port), nil); err != nil {
+		logger.Log(logger.ERROR, "Could not start server: %s\n", err)
+	}
 }
