@@ -12,7 +12,7 @@ type User struct {
 type Recipe struct {
 	Id        uuid.UUID
 	Name      string
-	Stages    map[string][]Ingredient // stage is ex. sauce
+	Stages    map[string][]Ingredient // stage is ex. sauce and dish itself. Or one stage is to prepare pesto to make a sandwitch, another one bread, finally we can place ingredients there
 	Steps     []Step
 	PhotoURLs []string
 }
@@ -31,12 +31,7 @@ type Ingredient struct {
 type IngredientAmount struct {
 	Gr    int
 	Units *float32
-	Kcal  *Kcal
-}
-
-type Kcal struct {
-	Value int
-	Unit  KcalUnit
+	Kcal  *KcalUnit
 }
 
 type KcalUnit struct {
