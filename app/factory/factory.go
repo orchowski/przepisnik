@@ -11,27 +11,27 @@ type ApplicationBuilder interface {
 	Start() ApplicationBuilder
 }
 
-type application struct {
+type applicationFactory struct {
 	port     int
 	basePath string
 	started  bool
 }
 
-func (a *application) WithBaseStoragePath(path string) ApplicationBuilder {
+func (a *applicationFactory) WithBaseStoragePath(path string) ApplicationBuilder {
 	a.basePath = path
 	return a
 }
 
-func (a *application) WithPort(port int) ApplicationBuilder {
+func (a *applicationFactory) WithPort(port int) ApplicationBuilder {
 	a.port = port
 	return a
 }
 
 func BuildApp() ApplicationBuilder {
-	return &application{}
+	return &applicationFactory{}
 }
 
-func (a *application) Start() ApplicationBuilder {
+func (a *applicationFactory) Start() ApplicationBuilder {
 	if a.started {
 		return a
 	}
