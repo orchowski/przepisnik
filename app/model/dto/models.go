@@ -41,6 +41,7 @@ type KcalUnit struct {
 }
 
 type Comment struct {
+	To      uuid.UUID
 	User    User
 	Date    time.Time
 	Content string
