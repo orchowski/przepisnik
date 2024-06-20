@@ -1,9 +1,13 @@
 package app
 
-import "fit.synapse/przepisnik/server"
-import "fit.synapse/przepisnik/logger"
-import "net/http"
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+
+	"fit.synapse/przepisnik/app"
+	"fit.synapse/przepisnik/logger"
+	"fit.synapse/przepisnik/server"
+)
 
 type ApplicationBuilder interface {
 	WithBaseStoragePath(path string) ApplicationBuilder
@@ -38,6 +42,8 @@ func (a *applicationFactory) Start() ApplicationBuilder {
 	logger.NewLogger(logger.INFO)
 	logger.NewLogger(logger.WARNING)
 	logger.NewLogger(logger.ERROR)
+
+	app.I
 	server.Start(
 		a.port,
 		map[string]server.Handler{
