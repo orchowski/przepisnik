@@ -43,7 +43,8 @@ func (a *applicationFactory) Start() ApplicationBuilder {
 	logger.NewLogger(logger.WARNING)
 	logger.NewLogger(logger.ERROR)
 
-	app.I
+	app := app.NewApp("")
+	fmt.Sprint(app)
 	server.Start(
 		a.port,
 		map[string]server.Handler{

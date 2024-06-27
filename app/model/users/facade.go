@@ -2,7 +2,6 @@ package users
 
 import (
 	model "fit.synapse/przepisnik/app/model/dto"
-	users_public "fit.synapse/przepisnik/app/model/users/public"
 	storage "fit.synapse/przepisnik/storage/users"
 	"github.com/google/uuid"
 )
@@ -16,7 +15,7 @@ type Facade interface {
 }
 
 type usersFacade struct {
-	storage users_public.UsersStorage
+	storage UsersStorage
 }
 
 func InitializeUsersModule(basePath string) Facade {
@@ -28,8 +27,8 @@ func InitializeUsersModule(basePath string) Facade {
 func (uf *usersFacade) Create(name string, pic string) (*uuid.UUID, error) {
 	return nil, nil
 }
-func (uf *usersFacade) Get(uuid.UUID) *model.User {
-	return nil
+func (uf *usersFacade) Get(id uuid.UUID) *model.User {
+	return uf.storage.Get(id)
 }
 func (uf *usersFacade) GetAll() []*model.User {
 	return nil
