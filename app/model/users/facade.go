@@ -25,17 +25,21 @@ func InitializeUsersModule(basePath string) Facade {
 }
 
 func (uf *usersFacade) Create(name string, pic string) (*uuid.UUID, error) {
-	return nil, nil
+	return uf.storage.Create(name, pic)
 }
+
 func (uf *usersFacade) Get(id uuid.UUID) *model.User {
 	return uf.storage.Get(id)
 }
+
 func (uf *usersFacade) GetAll() []*model.User {
-	return nil
+	return uf.storage.GetAll()
 }
+
 func (uf *usersFacade) Update(id uuid.UUID, name string, pic string) (*model.User, error) {
-	return nil, nil
+	return uf.storage.Update(id, name, pic)
 }
+
 func (uf *usersFacade) Delete(id uuid.UUID) error {
-	return nil
+	return uf.storage.Delete(id)
 }

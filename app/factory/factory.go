@@ -1,10 +1,8 @@
 package app
 
 import (
-	"fmt"
-	"net/http"
-
 	"fit.synapse/przepisnik/app"
+	"fit.synapse/przepisnik/app/views/htmx"
 	"fit.synapse/przepisnik/logger"
 	"fit.synapse/przepisnik/server"
 )
@@ -43,25 +41,11 @@ func (a *applicationFactory) Start() ApplicationBuilder {
 	logger.NewLogger(logger.WARNING)
 	logger.NewLogger(logger.ERROR)
 
-	app := app.NewApp("")
-	fmt.Sprint(app)
-	server.Start(
-		a.port,
-		map[string]server.Handler{
-			"/test": {
-				Get: &server.HandlerFunc{
-					Do: func(w http.ResponseWriter, r *http.Request) {
-						fmt.Fprintf(w, "elo siema")
-					},
-				},
-				Post: &server.HandlerFunc{
-					Do: func(w http.ResponseWriter, r *http.Request) {
-						fmt.Fprintf(w, "elo siema wcale nie")
-					},
-				},
-			},
-		},
-	)
+	app := app.NewApp(a.basePath)
+	app.Users.GetAll()
+	handlers := make(map[string]server.Handler)
+	htmx.RegisterHtmxControllers(handlers)
+	server.Start(a.port, handlers)
 
 	a.started = true
 	return a
