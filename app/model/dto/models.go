@@ -24,9 +24,6 @@ type Recipe struct {
     Calories  int
 }
 
-// todo : search np kategoria i kaloryczność całego dania / porcja / cały posiłek
-// obiad, porcja ma : >100, >200, >500
-
 type Step struct {
 	Description string
 	PhotoURLs   []string
