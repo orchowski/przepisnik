@@ -6,6 +6,7 @@ import (
 	model "fit.synapse/przepisnik/app/model/dto"
 	"github.com/google/uuid"
 )
+
 type Facade interface {
     Create(id *uuid.UUID, title string) (*model.Recipe, error)
     Delete(id uuid.UUID) error
@@ -17,6 +18,7 @@ type Facade interface {
     SetCalories(recipeId uuid.UUID, calories int) (*model.Recipe, error)
     CategorizeByCalories(recipes []model.Recipe) (map[string][]model.Recipe, error)
 }
+
 type recipes struct {
 }
 
