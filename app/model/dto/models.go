@@ -1,7 +1,10 @@
 package model
 
-import uuid "github.com/google/uuid"
-import "time"
+import (
+	"time"
+
+	uuid "github.com/google/uuid"
+)
 
 type User struct {
 	Id             uuid.UUID
@@ -18,6 +21,7 @@ type Recipe struct {
 	Author    uuid.UUID
 	Portions  int
 	Tags      []string
+    Calories  int
 }
 
 // todo : search np kategoria i kaloryczność całego dania / porcja / cały posiłek
