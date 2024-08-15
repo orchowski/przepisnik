@@ -16,7 +16,7 @@ type Recipe struct {
 	Id        uuid.UUID
 	Name      string
 	Stages    map[string][]Ingredient // stage is ex. sauce and dish itself. Or one stage is to prepare pesto to make a sandwitch, another one bread, finally we can place ingredients there
-	Steps     map[string][]Step       // where key is stage
+	Steps     map[string][]Step       // where key is stage name
 	PhotoURLs []string
 	Author    uuid.UUID
 	Portions  int
