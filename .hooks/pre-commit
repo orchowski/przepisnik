@@ -1,0 +1,20 @@
+#!/bin/sh
+git diff --cached > .git/staged.patch
+
+go fmt ./...
+
+if [ $? -ne 0 ]; then
+    echo "go fmt failed. Aborting commit."
+    exit 1
+fi
+
+git reset
+
+git apply --cached .git/staged.patch
+
+rm .git/staged.patch
+
+if [ $? -ne 0 ]; then
+    echo "Failed to re-apply staged changes. Aborting commit."
+    exit 1
+fi

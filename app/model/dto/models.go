@@ -21,7 +21,7 @@ type Recipe struct {
 	Author    uuid.UUID
 	Portions  int
 	Tags      []string
-    Calories  int
+	Calories  int
 }
 
 type Step struct {
