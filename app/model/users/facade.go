@@ -20,7 +20,7 @@ type usersFacade struct {
 
 func InitializeUsersModule(basePath string) Facade {
 	return &usersFacade{
-		storage: storage.NewUsersStorage(basePath),
+		storage: storage.NewUsersPersistentStorage(basePath),
 	}
 }
 

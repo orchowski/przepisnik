@@ -12,16 +12,18 @@ type User struct {
 	ProfilePicPath string
 }
 
+type StageName = string
 type Recipe struct {
-	Id        uuid.UUID
+	Id        *uuid.UUID
 	Name      string
-	Stages    map[string][]Ingredient // stage is ex. sauce and dish itself. Or one stage is to prepare pesto to make a sandwitch, another one bread, finally we can place ingredients there
-	Steps     map[string][]Step       // where key is stage name
+	Stages    map[StageName][]*Ingredient // stage is ex. sauce and dish itself. Or one stage is to prepare pesto to make a sandwitch, another one bread, finally we can place ingredients there
+	Steps     map[StageName][]*Step       // where key is stage name
 	PhotoURLs []string
 	Author    uuid.UUID
 	Portions  int
 	Tags      []string
 	Calories  int
+	Rating    int
 }
 
 type Step struct {
