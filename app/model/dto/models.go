@@ -32,9 +32,15 @@ type Step struct {
 }
 
 type Ingredient struct {
-	Id     uuid.UUID
+	Id     *uuid.UUID
 	Name   string
 	Amount IngredientAmount
+}
+
+type IngredientDefinition struct {
+	Id   *uuid.UUID
+	Name string
+	Kcal *KcalUnit
 }
 
 type IngredientAmount struct {

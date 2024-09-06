@@ -35,11 +35,9 @@ type recipeIngredient struct {
 }
 
 type ingredient struct {
-	Id          ingredientId
-	Name        string
-	AmountGr    int
-	AmountUnits *float32
-	Kcal        *kcalUnit
+	Id   ingredientId
+	Name string
+	Kcal *kcalUnit
 }
 
 type kcalUnit struct {

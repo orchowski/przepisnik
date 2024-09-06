@@ -12,7 +12,7 @@ func MapRecipeDto(id uuid.UUID, recipeDto model.Recipe) *recipe {
 			recipeIngredients := []*recipeIngredient{}
 			for _, ingredient := range ingredients {
 				recipeIngredients = append(recipeIngredients, &recipeIngredient{
-					Id:          ingredient.Id,
+					Id:          *ingredient.Id,
 					AmountGr:    ingredient.Amount.Gr,
 					AmountUnits: ingredient.Amount.Units,
 				})
@@ -62,16 +62,33 @@ func MapRecipeDto(id uuid.UUID, recipeDto model.Recipe) *recipe {
 	return recipe
 }
 
-// todo: in progress
-func MapRecipeDb(id uuid.UUID, recipeDb recipe, allRecipeIngredients []*ingredient) *model.Recipe {
-	mapStages := func(stagesDto map[model.StageName][]*model.Ingredient) map[string][]ingredientId {
-		stages := make(map[string][]uuid.UUID)
-		mapIngredients := func(ingredients []*model.Ingredient) []uuid.UUID {
-			ingredientIds := []uuid.UUID{}
+func MapRecipeDb(recipeDb *recipe, allRecipeIngredientDefinitions map[uuid.UUID]*ingredient) *model.Recipe {
+	mapStages := func(stagesDto map[model.StageName][]*recipeIngredient) map[string][]*model.Ingredient {
+		stages := make(map[string][]*model.Ingredient)
+		mapIngredients := func(ingredients []*recipeIngredient) []*model.Ingredient {
+			ingredientsMapped := []*model.Ingredient{}
 			for _, ingredient := range ingredients {
-				ingredientIds = append(ingredientIds, ingredient.Id)
+				fullIngredient := allRecipeIngredientDefinitions[ingredient.Id]
+				if fullIngredient == nil {
+					ingredientsMapped = append(ingredientsMapped, &model.Ingredient{
+						Name: "Ingredient deleted",
+					})
+				}
+				ingredientsMapped = append(ingredientsMapped, &model.Ingredient{
+					Id:   &ingredient.Id,
+					Name: fullIngredient.Name,
+					Amount: model.IngredientAmount{
+						Gr:    ingredient.AmountGr,
+						Units: ingredient.AmountUnits,
+						Kcal: &model.KcalUnit{
+							Gr100:    fullIngredient.Kcal.Gr100,
+							UnitGr:   fullIngredient.Kcal.UnitGr,
+							UnitName: fullIngredient.Kcal.UnitName,
+						},
+					},
+				})
 			}
-			return ingredientIds
+			return ingredientsMapped
 		}
 
 		for stgName, ingredients := range stagesDto {
@@ -81,12 +98,12 @@ func MapRecipeDb(id uuid.UUID, recipeDb recipe, allRecipeIngredients []*ingredie
 		return stages
 	}
 
-	mapSteps := func(stagesDto map[model.StageName][]*model.Step) map[string][]*step {
-		resultSteps := make(map[string][]*step)
-		mapStepList := func(steps []*model.Step) []*step {
-			stepList := []*step{}
+	mapSteps := func(stagesDto map[model.StageName][]*step) map[string][]*model.Step {
+		resultSteps := make(map[string][]*model.Step)
+		mapStepList := func(steps []*step) []*model.Step {
+			stepList := []*model.Step{}
 			for _, singleStep := range steps {
-				stepList = append(stepList, &step{
+				stepList = append(stepList, &model.Step{
 					Description: singleStep.Description,
 					PhotoURLs:   singleStep.PhotoURLs,
 				})
@@ -101,8 +118,8 @@ func MapRecipeDb(id uuid.UUID, recipeDb recipe, allRecipeIngredients []*ingredie
 		return resultSteps
 	}
 
-	recipe := &recipe{
-		Id:        id,
+	recipe := &model.Recipe{
+		Id:        &recipeDb.Id,
 		Name:      recipeDb.Name,
 		Stages:    mapStages(recipeDb.Stages),
 		Steps:     mapSteps(recipeDb.Steps),

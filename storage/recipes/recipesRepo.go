@@ -10,15 +10,16 @@ import (
 )
 
 type recipesRepo struct {
-	recipes map[uuid.UUID]*recipe
+	recipes         map[uuid.UUID]*recipe
+	ingredientsRepo *ingredientsRepo
 }
 
 func NewRecipesPersistentStorage(basePath string) *recipesRepo {
-	return NewRecipesInMemoryStorage()
+	return NewRecipesInMemoryStorage(newIngredientsInMemoryStorage())
 }
 
-func NewRecipesInMemoryStorage() *recipesRepo {
-	return &recipesRepo{recipes: make(map[uuid.UUID]*recipe)}
+func NewRecipesInMemoryStorage(ingredientsRepository *ingredientsRepo) *recipesRepo {
+	return &recipesRepo{recipes: make(map[uuid.UUID]*recipe), ingredientsRepo: ingredientsRepository}
 }
 
 func (rp *recipesRepo) Upsert(recipeDto model.Recipe) (*uuid.UUID, error) {
@@ -29,7 +30,7 @@ func (rp *recipesRepo) Upsert(recipeDto model.Recipe) (*uuid.UUID, error) {
 	} else {
 		id = *recipeDto.Id
 	}
-	recipe := MapRecipe(id, recipeDto)
+	recipe := MapRecipeDto(id, recipeDto)
 
 	if validationError := isValid(recipe); validationError != nil {
 		return nil, validationError
@@ -45,17 +46,7 @@ func (rp *recipesRepo) Get(id uuid.UUID) *model.Recipe {
 		return nil
 	}
 
-	return &model.Recipe{
-		Id: &recipeFound.Id,
-	}
-}
-
-func (rp *recipesRepo) GetAll() []*model.Recipe {
-	var allUsers []*model.Recipe
-	for _, user := range rp.users {
-		allUsers = append(allUsers, &model.Recipe{})
-	}
-	return allUsers
+	return MapRecipeDb(recipeFound, rp.ingredientsRepo.getAllForRecipe(recipeFound))
 }
 
 func (rp *recipesRepo) Delete(id uuid.UUID) error {
