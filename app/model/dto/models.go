@@ -45,7 +45,7 @@ type IngredientDefinition struct {
 
 type IngredientAmount struct {
 	Gr    int
-	Units *float32
+	Units *float64
 	Kcal  *KcalUnit
 }
 

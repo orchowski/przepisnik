@@ -31,7 +31,7 @@ type ingredientId = uuid.UUID
 type recipeIngredient struct {
 	Id          ingredientId
 	AmountGr    int
-	AmountUnits *float32
+	AmountUnits *float64
 }
 
 type ingredient struct {

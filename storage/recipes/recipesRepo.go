@@ -22,7 +22,7 @@ func NewRecipesInMemoryStorage(ingredientsRepository *ingredientsRepo) *recipesR
 	return &recipesRepo{recipes: make(map[uuid.UUID]*recipe), ingredientsRepo: ingredientsRepository}
 }
 
-func (rp *recipesRepo) Upsert(recipeDto model.Recipe) (*uuid.UUID, error) {
+func (rp *recipesRepo) Upsert(recipeDto *model.Recipe) (*uuid.UUID, error) {
 	var id uuid.UUID
 
 	if recipeDto.Id == nil {
@@ -69,7 +69,9 @@ func isValid(recipe *recipe) error {
 	for k := range recipe.Steps {
 		stepsKeys = append(stepsKeys, k)
 	}
-	utility.IsSubset(stepsKeys, stagesKeys)
+	if utility.IsSubset(stepsKeys, stagesKeys) {
+		// todo
+	}
 
 	return nil
 }

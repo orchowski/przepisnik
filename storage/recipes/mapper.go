@@ -5,7 +5,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func MapRecipeDto(id uuid.UUID, recipeDto model.Recipe) *recipe {
+func MapRecipeDto(id uuid.UUID, recipeDto *model.Recipe) *recipe {
 	mapStages := func(stagesDto map[model.StageName][]*model.Ingredient) map[string][]*recipeIngredient {
 		stages := make(map[string][]*recipeIngredient)
 		mapIngredients := func(ingredients []*model.Ingredient) []*recipeIngredient {
@@ -73,6 +73,7 @@ func MapRecipeDb(recipeDb *recipe, allRecipeIngredientDefinitions map[uuid.UUID]
 					ingredientsMapped = append(ingredientsMapped, &model.Ingredient{
 						Name: "Ingredient deleted",
 					})
+					continue
 				}
 				ingredientsMapped = append(ingredientsMapped, &model.Ingredient{
 					Id:   &ingredient.Id,

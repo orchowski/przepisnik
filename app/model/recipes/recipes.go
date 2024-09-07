@@ -6,7 +6,7 @@ import (
 )
 
 type RecipesStorage interface {
-	Upsert(model.Recipe) (*uuid.UUID, error)
+	Upsert(*model.Recipe) (*uuid.UUID, error)
 	Get(id uuid.UUID) *model.Recipe
 	// GetAll() []*model.User
 	// Update(id uuid.UUID, name string, pic string) (*model.User, error)
