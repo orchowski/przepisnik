@@ -12,7 +12,7 @@ type Application struct {
 
 func NewApp(basePath string) *Application {
 	return &Application{
-		Recipes: recipes.InitializeRecipesModule(),
+		Recipes: recipes.InitializeRecipesModule(basePath),
 		Users:   users.InitializeUsersModule(basePath),
 	}
 }

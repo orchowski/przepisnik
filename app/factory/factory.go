@@ -42,7 +42,7 @@ func (a *applicationFactory) Start() ApplicationBuilder {
 	logger.NewLogger(logger.ERROR)
 
 	app := app.NewApp(a.basePath)
-	app.Users.GetAll()
+	app.Users.GetAll() // todo to remove after use
 	handlers := make(map[string]server.Handler)
 	htmx.RegisterHtmxControllers(handlers)
 	server.Start(a.port, handlers)

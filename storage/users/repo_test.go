@@ -8,7 +8,7 @@ import (
 )
 
 func TestNewUsersStorage(t *testing.T) {
-	storage := NewUsersStorage("")
+	storage := NewUsersInMemoryStorage()
 	if storage == nil {
 		t.Fatal("Expected non-nil storage")
 	}
@@ -18,7 +18,7 @@ func TestNewUsersStorage(t *testing.T) {
 }
 
 func TestCreateUser(t *testing.T) {
-	storage := NewUsersStorage("")
+	storage := NewUsersInMemoryStorage()
 	id, err := storage.Create("John Doe", "/path/to/profilepic")
 
 	if err != nil {
@@ -33,7 +33,7 @@ func TestCreateUser(t *testing.T) {
 }
 
 func TestCreateUserInvalid(t *testing.T) {
-	storage := NewUsersStorage("")
+	storage := NewUsersInMemoryStorage()
 	_, err := storage.Create("", "/path/to/profilepic")
 
 	if err == nil {
@@ -42,7 +42,7 @@ func TestCreateUserInvalid(t *testing.T) {
 }
 
 func TestGetUser(t *testing.T) {
-	storage := NewUsersStorage("")
+	storage := NewUsersInMemoryStorage()
 	id, _ := storage.Create("John Doe", "/path/to/profilepic")
 
 	user := storage.Get(*id)
@@ -58,7 +58,7 @@ func TestGetUser(t *testing.T) {
 }
 
 func TestGetUserNotFound(t *testing.T) {
-	storage := NewUsersStorage("")
+	storage := NewUsersInMemoryStorage()
 	id := uuid.New()
 
 	user := storage.Get(id)
@@ -68,7 +68,7 @@ func TestGetUserNotFound(t *testing.T) {
 }
 
 func TestGetAllUsers(t *testing.T) {
-	storage := NewUsersStorage("")
+	storage := NewUsersInMemoryStorage()
 	storage.Create("John Doe", "/path/to/profilepic")
 	storage.Create("Jane Doe", "/path/to/anotherprofilepic")
 
@@ -79,7 +79,7 @@ func TestGetAllUsers(t *testing.T) {
 }
 
 func TestUpdateUser(t *testing.T) {
-	storage := NewUsersStorage("")
+	storage := NewUsersInMemoryStorage()
 	id, _ := storage.Create("John Doe", "/path/to/profilepic")
 
 	updatedUser, err := storage.Update(*id, "John Smith", "/new/path/to/profilepic")
@@ -98,7 +98,7 @@ func TestUpdateUser(t *testing.T) {
 }
 
 func TestUpdateUserNotFound(t *testing.T) {
-	storage := NewUsersStorage("")
+	storage := NewUsersInMemoryStorage()
 	id := uuid.New()
 
 	_, err := storage.Update(id, "John Smith", "/new/path/to/profilepic")
@@ -108,7 +108,7 @@ func TestUpdateUserNotFound(t *testing.T) {
 }
 
 func TestDeleteUser(t *testing.T) {
-	storage := NewUsersStorage("")
+	storage := NewUsersInMemoryStorage()
 	id, _ := storage.Create("John Doe", "/path/to/profilepic")
 
 	err := storage.Delete(*id)
@@ -121,7 +121,7 @@ func TestDeleteUser(t *testing.T) {
 }
 
 func TestDeleteUserNotFound(t *testing.T) {
-	storage := NewUsersStorage("")
+	storage := NewUsersInMemoryStorage()
 	id := uuid.New()
 
 	err := storage.Delete(id)

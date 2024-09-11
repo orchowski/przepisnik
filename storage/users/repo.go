@@ -12,7 +12,11 @@ type usersRepo struct {
 	users map[uuid.UUID]*user
 }
 
-func NewUsersStorage(basePath string) *usersRepo {
+func NewUsersPersistentStorage(basePath string) *usersRepo {
+	return NewUsersInMemoryStorage()
+}
+
+func NewUsersInMemoryStorage() *usersRepo {
 	return &usersRepo{users: make(map[uuid.UUID]*user)}
 }
 
